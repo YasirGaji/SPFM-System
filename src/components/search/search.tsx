@@ -1,0 +1,44 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useState } from 'react';
+import { AsyncPaginate } from 'react-select-async-paginate';
+import { GEO_API_URL, geoApiOptions } from '../../api';
+
+const Search = ({ onSearchChange }: any) => {
+  const [search, setSearch] = useState(null);
+
+  const loadOptions = async (inputValues: any) => {
+    return fetch(
+      `${GEO_API_URL}/?minPopulation=1000000&namePrefix=${inputValues}`,
+      geoApiOptions
+    )
+      .then((response) => response.json())
+      .then((response) => {
+        return {
+          options: response.data.map((city:any) => {
+            return {
+              value: `${city.latitude} ${city.longitude}`,
+              label: `${city.name}, ${city.countryCode}`,
+            };
+          }),
+        };
+      });
+  };
+
+  const handleOnChange = (searchData: any) => {
+    setSearch(searchData);
+    onSearchChange(searchData);
+  };
+
+  return (
+    <AsyncPaginate
+      placeholder="Search for city"
+      debounceTimeout={600}
+      value={search}
+      onChange={handleOnChange}
+      loadOptions={loadOptions}
+    />
+  );
+};
+
+export default Search;
