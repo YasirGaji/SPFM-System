@@ -2,3 +2,13 @@
   max-width: 1080px;
   margin: 20px auto;
 }
+
+.title {
+  font-size: larger;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  margin-top: 50px;
+  text-align: center;
+  font-weight: 700;
+}
